@@ -1,0 +1,39 @@
+# 
+# Copyright (c) 2025 blnxthtmswpr.
+# 
+# This program is free software: you can redistribute it and/or modify  
+# it under the terms of the GNU General Public License as published by  
+# the Free Software Foundation, version 3.
+#
+# This program is distributed in the hope that it will be useful, but 
+# WITHOUT ANY WARRANTY; without even the implied warranty of 
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License 
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Check if the first argument is '--debian' and second arg is provided
+if [ "$1" == "--debian" ] && [ -n "$2" ]; then
+	# Install package
+	echo "Installing Debian package $2"
+	sudo apt install -y "$2"
+elif [ "$1" == "--install-gofetch" ]; then
+	echo "Installing Gofetch from blnxthtmswpr repositories"
+	wget https://github.com/blnxthtmswpr/gofetch/releases/download/v1.0.0/blinx-gofetch.deb
+	sudo apt install -y ./blinx-gofetch.deb
+	rm ./blinx-gofetch.deb
+elif [ "$1" == "--rpm" ] && [ -n "$2" ]; then
+	echo "Installing rpm package from url"
+	wget -O file.rpm $2
+	sudo alien --to-deb -i ./file.rpm
+	rm ./file.rpm
+else
+	echo "Usage: blinxpkg3 <argument> <package_name>"
+	echo "Arguments:"
+	echo "\t--debian: install a Debian package (uses apt)"
+	echo "\t--install-gofetch: Installs the program gofetch. No need for a second arg."
+	echo "\t--rpm: Installs an RPM file. 2nd argument is URL of the RPM"
+	exit 1
+fi
